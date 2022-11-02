@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"strings"
 	"testing"
 
 	"github.com/serapmtr/go-httpclient.git/gohttp"
@@ -38,9 +39,10 @@ func TestGetEndpoints(t *testing.T) {
 
 	t.Run("TestErrorUnmarshalResponseBody", func(t *testing.T) {
 		gohttp.AddMock(gohttp.Mock{
-			Method:       http.MethodGet,
-			Url:          "https://api.github.com",
-			ResponseBody: `{"current_user_url": 123}`,
+			Method:             http.MethodGet,
+			Url:                "https://api.github.com",
+			ResponseStatusCode: http.StatusOK,
+			ResponseBody:       `{"current_user_url": 123}`,
 		})
 		endpoints, err := GetEndpoints()
 
@@ -52,7 +54,7 @@ func TestGetEndpoints(t *testing.T) {
 			t.Error("an error was expected")
 		}
 
-		if err.Error() != "json unmarshal error" {
+		if !strings.Contains(err.Error(), "cannot unmarshal number into Go struct field") {
 			t.Error("invalid error message recieved")
 		}
 	})
