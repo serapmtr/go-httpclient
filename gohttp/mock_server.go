@@ -1,6 +1,13 @@
 package gohttp
 
-import "sync"
+import (
+	"crypto/md5"
+	"encoding/hex"
+	"errors"
+	"fmt"
+	"strings"
+	"sync"
+)
 
 var (
 	mockupServer = mockServer{
@@ -29,6 +36,13 @@ func StopMockServer() {
 	mockupServer.enabled = false
 }
 
+func FlushMocks() {
+	mockupServer.serverMutex.Lock()
+	defer mockupServer.serverMutex.Unlock()
+
+	mockupServer.mocks = make(map[string]*Mock)
+}
+
 func AddMock(mock Mock) {
 	mockupServer.serverMutex.Lock()
 	defer mockupServer.serverMutex.Unlock()
@@ -39,9 +53,33 @@ func AddMock(mock Mock) {
 }
 
 func (m *mockServer) getMockKey(method, url, body string) string {
-	return method + url + body
+	hasher := md5.New()
+	hasher.Write([]byte(method + url + m.cleanBody(body)))
+	key := hex.EncodeToString(hasher.Sum(nil))
+	fmt.Println(fmt.Sprintf("KEY: '%s'", key))
+	return key
+}
+
+func (m *mockServer) cleanBody(body string) string {
+	body = strings.TrimSpace(body)
+	if body == "" {
+		return ""
+	}
+	body = strings.ReplaceAll(body, "\t", "") // body, old, new
+
+	return body
 }
 
 func (m *mockServer) getMock(method, url, body string) *Mock {
-	return mockupServer.mocks[m.getMockKey(method, url, body)]
+	// if m.enabled false, then in test we call actual http function
+	if !m.enabled {
+		return nil
+	}
+	if mock := mockupServer.mocks[m.getMockKey(method, url, body)]; mock != nil {
+		return mock
+	}
+
+	return &Mock{
+		Error: errors.New(fmt.Sprintf("No matching  %s from '%s' with given body", method, url)),
+	}
 }

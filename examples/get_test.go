@@ -4,18 +4,37 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"os"
 	"strings"
 	"testing"
 
 	"github.com/serapmtr/go-httpclient.git/gohttp"
 )
 
+// always this function starts first
+func TestMain(m *testing.M) {
+	fmt.Println("About to start test cases for package 'examples' ")
+
+	// Tell the HTTP library to mock any further request
+	// from here
+	gohttp.StartMockServer()
+
+	// we have to do that for starting other tests
+	os.Exit(m.Run())
+}
+
 func TestGetEndpoints(t *testing.T) {
 
-	gohttp.StartMockServer()
-	GetEndpoints()
-
 	t.Run("TestErrorFetchingFromGithub", func(t *testing.T) {
+		// with this, we clean all mocks, so we can recreate them
+		gohttp.FlushMocks()
+
+		// we use mock because we can't control what
+		// this request returns. Application will
+		//  be up and running id we don't
+
+		// if we delete the mock, then api will call
+		// actual http call
 		gohttp.AddMock(gohttp.Mock{
 			Method: http.MethodGet,
 			Url:    "https://api.github.com",
