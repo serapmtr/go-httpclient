@@ -56,7 +56,7 @@ func (m *mockServer) getMockKey(method, url, body string) string {
 	hasher := md5.New()
 	hasher.Write([]byte(method + url + m.cleanBody(body)))
 	key := hex.EncodeToString(hasher.Sum(nil))
-	fmt.Println(fmt.Sprintf("KEY: '%s'", key))
+	fmt.Printf("KEY: '%s' \n", key)
 	return key
 }
 
