@@ -1,43 +1,8 @@
 package gohttp
 
 import (
-	"net/http"
 	"testing"
 )
-
-func TestGetRequestHeaders(t *testing.T) {
-	// Initialization
-	client := httpClient{}
-
-	commonHeaders := make(http.Header)
-	commonHeaders.Set("Content-Type", "application/json")
-	commonHeaders.Set("User-Agent", "cool-http-client")
-
-	client.builder.headers = commonHeaders
-
-	// Execution
-	requstHeaders := make(http.Header)
-	requstHeaders.Set("X-Request-Id", "ABC-123")
-
-	finalHeaders := client.getRequestHeaders(requstHeaders)
-
-	// Validation
-	if len(finalHeaders) != 3 {
-		t.Error("We expect 3 headers")
-	}
-
-	if finalHeaders.Get("Content-Type") != "application/json" {
-		t.Error("Invalid content type recieved")
-	}
-
-	if finalHeaders.Get("User-Agent") != "cool-http-client" {
-		t.Error("Invalid user agent recieved")
-	}
-
-	if finalHeaders.Get("X-Request-Id") != "ABC-123" {
-		t.Error("Invalid request id recieved")
-	}
-}
 
 func TestGetRequestBody(t *testing.T) {
 
@@ -63,7 +28,7 @@ func TestGetRequestBody(t *testing.T) {
 			t.Error("No error expected when marshaling slice as json")
 		}
 
-		if string(body) != `["one", "two"]` {
+		if string(body) != `["one","two"]` {
 			t.Error("Invalid json body obtained")
 		}
 	})
