@@ -17,7 +17,7 @@ func TestMain(m *testing.M) {
 
 	// Tell the HTTP library to mock any further request
 	// from here
-	gohttpmock.StartMockServer()
+	gohttpmock.MockupServer.Start()
 
 	// we have to do that for starting other tests
 	os.Exit(m.Run())
@@ -27,7 +27,7 @@ func TestGetEndpoints(t *testing.T) {
 
 	t.Run("TestErrorFetchingFromGithub", func(t *testing.T) {
 		// with this, we clean all mocks, so we can recreate them
-		gohttpmock.DeleteMocks()
+		gohttpmock.MockupServer.DeleteMocks()
 
 		// we use mock because we can't control what
 		// this request returns. Application will
@@ -35,7 +35,7 @@ func TestGetEndpoints(t *testing.T) {
 
 		// if we delete the mock, then api will call
 		// actual http call
-		gohttpmock.AddMock(gohttpmock.Mock{
+		gohttpmock.MockupServer.AddMock(gohttpmock.Mock{
 			Method: http.MethodGet,
 			Url:    "https://api.github.com",
 			Error:  errors.New("timeout getting github endpoints"),
@@ -57,7 +57,7 @@ func TestGetEndpoints(t *testing.T) {
 	})
 
 	t.Run("TestErrorUnmarshalResponseBody", func(t *testing.T) {
-		gohttpmock.AddMock(gohttpmock.Mock{
+		gohttpmock.MockupServer.AddMock(gohttpmock.Mock{
 			Method:             http.MethodGet,
 			Url:                "https://api.github.com",
 			ResponseStatusCode: http.StatusOK,
@@ -79,7 +79,7 @@ func TestGetEndpoints(t *testing.T) {
 	})
 
 	t.Run("TestNoError", func(t *testing.T) {
-		gohttpmock.AddMock(gohttpmock.Mock{
+		gohttpmock.MockupServer.AddMock(gohttpmock.Mock{
 			Method:             http.MethodGet,
 			Url:                "https://api.github.com",
 			ResponseStatusCode: http.StatusOK,
