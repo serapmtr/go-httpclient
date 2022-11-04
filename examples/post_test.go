@@ -6,14 +6,14 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/serapmtr/go-httpclient.git/gohttp"
+	gohttpmock "github.com/serapmtr/go-httpclient.git/gohttp_mock"
 )
 
 func TestCreateRepo(t *testing.T) {
 	t.Run("timeoutFromGithub", func(t *testing.T) {
-		gohttp.FlushMocks()
+		gohttpmock.DeleteMocks()
 
-		gohttp.AddMock(gohttp.Mock{
+		gohttpmock.AddMock(gohttpmock.Mock{
 			Method:      http.MethodPost,
 			Url:         "https://api.github.com/user/repos",
 			RequestBody: `{"name":"test-repo","private":true}`,
@@ -41,9 +41,9 @@ func TestCreateRepo(t *testing.T) {
 	})
 
 	t.Run("timeoutFromGithub", func(t *testing.T) {
-		gohttp.FlushMocks()
+		gohttpmock.DeleteMocks()
 
-		gohttp.AddMock(gohttp.Mock{
+		gohttpmock.AddMock(gohttpmock.Mock{
 			Method:      http.MethodPost,
 			Url:         "https://api.github.com/user/repos",
 			RequestBody: `{"name":"test-repo","private":true}`,
