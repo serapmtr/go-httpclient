@@ -1,8 +1,10 @@
-package gohttp
+package gohttpmock
 
 import (
 	"fmt"
 	"net/http"
+
+	"github.com/serapmtr/go-httpclient.git/core"
 )
 
 // mocking key => method + url + body
@@ -19,15 +21,15 @@ type Mock struct {
 	ResponseStatusCode int
 }
 
-func (m *Mock) GetResponse() (*Response, error) {
+func (m *Mock) GetResponse() (*core.Response, error) {
 	if m.Error != nil {
 		return nil, m.Error
 	}
 
-	response := Response{
-		status:     fmt.Sprintf("%d %s", m.ResponseStatusCode, http.StatusText(m.ResponseStatusCode)),
-		statusCode: m.ResponseStatusCode,
-		body:       []byte(m.ResponseBody),
+	response := core.Response{
+		Status:     fmt.Sprintf("%d %s", m.ResponseStatusCode, http.StatusText(m.ResponseStatusCode)),
+		StatusCode: m.ResponseStatusCode,
+		Body:       []byte(m.ResponseBody),
 	}
 
 	return &response, nil
