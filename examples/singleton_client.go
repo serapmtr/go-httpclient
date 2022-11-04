@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/serapmtr/go-httpclient.git/gohttp"
+	"github.com/serapmtr/go-httpclient.git/gomime"
 )
 
 var (
@@ -12,11 +13,14 @@ var (
 )
 
 func getHttpClient() gohttp.Client {
-	currentClient := http.Client{}
+	headers := make(http.Header)
+	headers.Set(gomime.HeaderContentType, gomime.ContentTypeJson)
+
 	client := gohttp.NewBuilder().
+		SetHeaders(headers).
 		SetConnectionTimeout(2 * time.Second).
 		SetResponseTimeout(3 * time.Second).
-		SetHttpClient(&currentClient).
+		SetUserAgent("Serap-Computer"). // Who is calling or sending HTTP request
 		Build()
 
 	return client

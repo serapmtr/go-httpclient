@@ -1,7 +1,9 @@
 package examples
 
 import (
+	"encoding/json"
 	"errors"
+	"fmt"
 	"net/http"
 )
 
@@ -16,11 +18,13 @@ type GithubError struct {
 
 type Repository struct {
 	Name        string `json:"name"`
-	Description string `json:"description"`
+	Description string `json:"description,omitempty"`
 	Private     bool   `json:"private"`
 }
 
 func CreateRepo(request Repository) (*Repository, error) {
+	bytes, _ := json.Marshal(request)
+	fmt.Println(string(bytes))
 	response, err := httpClient.Post("https://api.github.com/user/repos", request)
 	if err != nil {
 		return nil, err
