@@ -10,31 +10,64 @@ import (
 )
 
 func TestCreateRepo(t *testing.T) {
-	gohttp.FlushMocks()
+	t.Run("timeoutFromGithub", func(t *testing.T) {
+		gohttp.FlushMocks()
 
-	gohttp.AddMock(gohttp.Mock{
-		Method:      http.MethodPost,
-		Url:         "https://api.github.com/user/repos",
-		RequestBody: `{"name":"test-repo","private":true}`,
+		gohttp.AddMock(gohttp.Mock{
+			Method:      http.MethodPost,
+			Url:         "https://api.github.com/user/repos",
+			RequestBody: `{"name":"test-repo","private":true}`,
 
-		Error: errors.New("timeout from github"),
+			Error: errors.New("timeout from github"),
+		})
+
+		repository := Repository{
+			Name:    "test-repo",
+			Private: true,
+		}
+
+		repo, err := CreateRepo(repository)
+
+		if repo != nil {
+			t.Error("No repo expected when we get a timeout from github")
+		}
+		if err == nil {
+			t.Error("An error is expecting when we get a timeout from github")
+		}
+		if err.Error() != "timeout from github" {
+			fmt.Println(err.Error())
+			t.Error("invalid error message")
+		}
 	})
 
-	repository := Repository{
-		Name:    "test-repo",
-		Private: true,
-	}
+	t.Run("timeoutFromGithub", func(t *testing.T) {
+		gohttp.FlushMocks()
 
-	repo, err := CreateRepo(repository)
+		gohttp.AddMock(gohttp.Mock{
+			Method:      http.MethodPost,
+			Url:         "https://api.github.com/user/repos",
+			RequestBody: `{"name":"test-repo","private":true}`,
 
-	if repo != nil {
-		t.Error("No repo expected when we get a timeout from github")
-	}
-	if err == nil {
-		t.Error("An error is expecting when we get a timeout from github")
-	}
-	if err.Error() != "timeout from github" {
-		fmt.Println(err.Error())
-		t.Error("invalid error message")
-	}
+			ResponseStatusCode: http.StatusCreated,
+			ResponseBody:       `{"id":123,"name":"test-repo"}`,
+		})
+
+		repository := Repository{
+			Name:    "test-repo",
+			Private: true,
+		}
+
+		repo, err := CreateRepo(repository)
+
+		if err != nil {
+			t.Error("No error expected when we get valid response from github")
+		}
+		if repo == nil {
+			t.Error("A valid repo was expected at this point")
+		}
+		if repo.Name != repository.Name {
+			t.Error("invalid repository name obtained from github")
+		}
+	})
+
 }
