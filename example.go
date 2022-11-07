@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/serapmtr/go-httpclient.git/gohttp"
+	"github.com/serapmtr/go-httpclient/gohttp"
 )
 
 var (

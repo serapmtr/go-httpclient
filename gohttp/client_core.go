@@ -11,9 +11,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/serapmtr/go-httpclient.git/core"
-	gohttpmock "github.com/serapmtr/go-httpclient.git/gohttp_mock"
-	"github.com/serapmtr/go-httpclient.git/gomime"
+	"github.com/serapmtr/go-httpclient/core"
+	gohttpmock "github.com/serapmtr/go-httpclient/gohttp_mock"
+	"github.com/serapmtr/go-httpclient/gomime"
 )
 
 const (

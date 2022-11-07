@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/serapmtr/go-httpclient.git/gohttp"
-	"github.com/serapmtr/go-httpclient.git/gomime"
+	"github.com/serapmtr/go-httpclient/gohttp"
+	"github.com/serapmtr/go-httpclient/gomime"
 )
 
 var (

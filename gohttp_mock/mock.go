@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/serapmtr/go-httpclient.git/core"
+	"github.com/serapmtr/go-httpclient/core"
 )
 
 // mocking key => method + url + body

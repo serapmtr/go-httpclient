@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"sync"
 
-	"github.com/serapmtr/go-httpclient.git/core"
+	"github.com/serapmtr/go-httpclient/core"
 )
 
 type httpClient struct {

@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	gohttpmock "github.com/serapmtr/go-httpclient.git/gohttp_mock"
+	gohttpmock "github.com/serapmtr/go-httpclient/gohttp_mock"
 )
 
 // always this function starts first

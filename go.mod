@@ -1,3 +1,3 @@
-module github.com/serapmtr/go-httpclient.git
+module github.com/serapmtr/go-httpclient
 
 go 1.19

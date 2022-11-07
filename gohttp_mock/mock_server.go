@@ -7,7 +7,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/serapmtr/go-httpclient.git/core"
+	"github.com/serapmtr/go-httpclient/core"
 )
 
 var (
