@@ -39,13 +39,13 @@ func (c *httpClient) Post(url string, body interface{}, headers ...http.Header) 
 }
 
 func (c *httpClient) Put(url string, body interface{}, headers ...http.Header) (*core.Response, error) {
-	return c.do(http.MethodGet, url, getHeaders(headers...), nil)
+	return c.do(http.MethodPut, url, getHeaders(headers...), nil)
 }
 
 func (c *httpClient) Patch(url string, body interface{}, headers ...http.Header) (*core.Response, error) {
-	return c.do(http.MethodGet, url, getHeaders(headers...), nil)
+	return c.do(http.MethodPatch, url, getHeaders(headers...), nil)
 }
 
 func (c *httpClient) Delete(url string, headers ...http.Header) (*core.Response, error) {
-	return c.do(http.MethodGet, url, getHeaders(headers...), nil)
+	return c.do(http.MethodDelete, url, getHeaders(headers...), nil)
 }
