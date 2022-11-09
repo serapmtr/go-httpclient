@@ -43,7 +43,7 @@ func (c *httpClient) Put(url string, body interface{}, headers ...http.Header) (
 }
 
 func (c *httpClient) Patch(url string, body interface{}, headers ...http.Header) (*core.Response, error) {
-	return c.do(http.MethodPatch, url, getHeaders(headers...), nil)
+	return c.do(http.MethodPatch, url, getHeaders(headers...), body)
 }
 
 func (c *httpClient) Delete(url string, headers ...http.Header) (*core.Response, error) {
