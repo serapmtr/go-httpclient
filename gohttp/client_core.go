@@ -2,7 +2,6 @@ package gohttp
 
 import (
 	"bytes"
-	"crypto/tls"
 	"encoding/json"
 	"encoding/xml"
 	"errors"
@@ -97,7 +96,6 @@ func (c *httpClient) getHttpClient() core.HttpClient {
 				DialContext: (&net.Dialer{ // How long that we wait for request timeout
 					Timeout: c.getConnectionTimeout(), // amount of time that we wait for a given connection
 				}).DialContext,
-				TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
 			},
 		}
 	})
